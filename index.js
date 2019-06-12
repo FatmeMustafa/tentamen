@@ -1,8 +1,7 @@
 const express = require("express");
-
-const routes = require("./routes")
-const db = require("./models")
-
+const routes = require("./routes");
+const db = require("./models");
+const cors = require('cors');
 const app = express();
 
 // environment variable PORT or 3000 if unset
@@ -10,6 +9,7 @@ const port = process.env.PORT || 3000;
 
 // Add middleware for parsing the body to req.body
 // middlewares are executed in the order added, so add before routes
+app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
@@ -27,7 +27,6 @@ app.use((req, res, next) => {
 
 app.use('/', express.static(__dirname + '/swagger'));
 app.use('/', routes)
-
 
 // Start up the database, then the server and begin listen to requests
 if(process.env.NODE_ENV != "test") {
